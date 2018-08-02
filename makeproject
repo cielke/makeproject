@@ -1,0 +1,33 @@
+#!/bin/bash
+
+TEMPLATE_LOCATION=~/Projects/SDA/template
+GITUSERNAME=$(git config --global user.name)
+
+if [ -z "$1" ]
+then
+    echo "provide the directory name for the project:"
+    read DIRNAME
+else
+    DIRNAME="$1"
+fi
+
+if [ -z "$GITUSERNAME" ]; 
+then
+    echo "Set-up your git first run: 'git config --global user.name <username>'"
+    echo "Consider using 'git config credential.helper store' for storing your data (only use on private accessed computer)"
+fi
+
+mkdir $DIRNAME
+cd $DIRNAME
+cp -rT $TEMPLATE_LOCATION .
+sed -i -e 's/template/'$DIRNAME'/g' pom.xml
+
+curl -X POST -v -u $GITUSERNAME "https://api.bitbucket.org/2.0/repositories/$GITUSERNAME/$DIRNAME" -d '{"scm": "git", "is_private": "false"}'
+
+git init
+git add -A
+git commit -m "initial commit"
+git remote add origin https://$GITUSERNAME@bitbucket.org/$GITUSERNAME/$DIRNAME.git
+git push -u origin master
+
+idea pom.xml
