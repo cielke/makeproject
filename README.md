@@ -12,6 +12,6 @@ This is a helper bash script to automate new project creation.
 ### Usage:
 Just type 'makeproject' or 'makeproject <project_name>' to create a project.<br/>
 It will:<br/>
-- copy your the template to given directory (the template is set to Maven Java8 project).<br/>
+- copy your template (don't forget to set the path in the script!) to the given directory (the template is set to Maven Java8 project).<br/>
 - create a new repository *(oh! irony @ bitbacket)* and push the files with initial commit.<br/>
 - open the project in Intellij
